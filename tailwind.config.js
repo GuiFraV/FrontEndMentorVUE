@@ -7,6 +7,9 @@ module.exports = {
       backgroundImage: {
         "hero-pattern": "url('./src/assets/bg-main-desktop.png')",
       },
+      fontFamily: {
+        "space-grotesk": ['"Space Grotesk"', "sans-serif"],
+      },
     },
   },
   variants: {
