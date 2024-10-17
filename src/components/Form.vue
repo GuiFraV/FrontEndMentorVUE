@@ -1,6 +1,14 @@
 <script setup>
 import { ref, toRefs, defineProps } from "vue";
-
+import FormField from "./FormField.vue";
+import ThankYou from "./ThankYou.vue";
+import {
+  validateName,
+  validateCardNumber,
+  validateExpMonth,
+  validateExpYear,
+  validateCVC,
+} from "../validation";
 // Réception de la prop formData du composant parent
 const props = defineProps({
   formData: {
@@ -21,142 +29,117 @@ const errors = ref({
   cvc: false,
 });
 
-// Validation du formulaire
-const validateForm = () => {
-  errors.value.name = !name.value;
-  errors.value.cardNumber = !cardNumber.value || cardNumber.value.length < 16;
-  errors.value.expMonth = !expMonth.value || expMonth.value.length !== 2;
-  errors.value.expYear = !expYear.value || expYear.value.length !== 2;
-  errors.value.cvc = !cvc.value || cvc.value.length < 3;
+// État pour déterminer si le formulaire a été soumis
+const isFormSubmitted = ref(false);
 
-  // Retourne `true` si aucun champ n'a d'erreur
-  return !Object.values(errors.value).includes(true);
-};
-
-// Soumission du formulaire
+// Fonction pour soumettre le formulaire
 const submitForm = () => {
-  if (validateForm()) {
-    console.log("Formulaire envoyé avec succès !");
-    // Ajouter la logique pour traiter la soumission ici
+  errors.value.name = !validateName(name.value);
+  errors.value.cardNumber = !validateCardNumber(cardNumber.value);
+  errors.value.expMonth = !validateExpMonth(expMonth.value);
+  errors.value.expYear = !validateExpYear(expYear.value);
+  errors.value.cvc = !validateCVC(cvc.value);
+
+  if (Object.values(errors.value).every((error) => !error)) {
+    isFormSubmitted.value = true;
   } else {
     console.log("Formulaire invalide.");
   }
 };
+
+// Fonction pour réinitialiser le formulaire
+const resetForm = () => {
+  isFormSubmitted.value = false;
+  name.value = "";
+  cardNumber.value = "";
+  expMonth.value = "";
+  expYear.value = "";
+  cvc.value = "";
+  errors.value = {
+    name: false,
+    cardNumber: false,
+    expMonth: false,
+    expYear: false,
+    cvc: false,
+  };
+};
 </script>
 
 <template>
-  <div class="w-[381px] h-[352px] ml-[349px]">
-    <form
-      @submit.prevent="submitForm"
-      class="h-full flex flex-col justify-between font-space-grotesk font-medium"
-    >
-      <!-- CARD NAME -->
-      <div class="flex flex-col">
-        <label for="name">CARDHOLDER NAME</label>
-        <input
+  <div class="absolute top-[275px] right-[527px] w-[381px]">
+    <div v-if="!isFormSubmitted" class="h-[352px]">
+      <form
+        @submit.prevent="submitForm"
+        class="flex flex-col justify-between font-space-grotesk font-medium h-full"
+      >
+        <!-- CARD NAME -->
+        <FormField
           v-model="name"
+          label="CARDHOLDER NAME"
           id="name"
           placeholder="e.g. Jane Appleseed"
-          :class="[
-            'w-[381px] h-[45px] rounded-[9px] border pl-4 focus:outline-none focus:border-purple-500',
-            errors.name ? 'border-red-500' : '',
-          ]"
+          :error="errors.name"
+          errorMessage="Please enter a valid name."
         />
-        <p v-if="errors.name" class="text-red-500 text-sm mt-1">
-          Can't be blank
-        </p>
-      </div>
 
-      <!-- CARD NUMBER  -->
-      <div class="flex flex-col">
-        <label for="cardNumber">CARDHOLDER NUMBER</label>
-        <input
+        <!-- CARD NUMBER -->
+        <FormField
           v-model="cardNumber"
+          label="CARDHOLDER NUMBER"
           id="cardNumber"
-          type="text"
           placeholder="e.g. 1234 5678 9123 0000"
-          :class="[
-            'w-[381px] h-[45px] rounded-[9px] border pl-4 focus:outline-none focus:border-purple-500',
-            errors.cardNumber ? 'border-red-500' : '',
-          ]"
-          maxlength="16"
+          maxlength="19"
+          :error="errors.cardNumber"
+          errorMessage="Please enter a valid card number."
         />
-        <p v-if="errors.cardNumber" class="text-red-500 text-xs mt-1">
-          Wrong format, numbers only
-        </p>
-      </div>
 
-      <!-- EXPIRATION DATE -->
-      <div class="flex justify-between">
-        <div class="flex flex-col">
-          <label for="expMonth" class="mb-2">EXP. DATE (MM/YY)</label>
-          <div class="flex space-x-2">
-            <!-- Champ MM -->
-            <div class="flex flex-col">
-              <input
-                type="text"
+        <!-- EXPIRATION DATE ET CVC -->
+        <div class="flex justify-between">
+          <!-- Expiration Date -->
+          <div class="flex flex-col">
+            <label>EXP. DATE (MM/YY)</label>
+            <div class="flex space-x-2">
+              <FormField
                 v-model="expMonth"
                 id="expMonth"
                 placeholder="MM"
                 maxlength="2"
-                :class="[
-                  'w-[80px] h-[45px] rounded-[9px] border pl-4 focus:outline-none focus:border-purple-500',
-                  errors.expMonth ? 'border-red-500' : '',
-                ]"
+                :error="errors.expMonth"
+                errorMessage="Invalid month."
               />
-              <p v-if="errors.expMonth" class="text-red-500 text-xs mt-1">
-                Can't be blank
-              </p>
-            </div>
-            <!-- Champ YY -->
-            <div class="flex flex-col">
-              <input
-                type="text"
+              <FormField
                 v-model="expYear"
                 id="expYear"
                 placeholder="YY"
                 maxlength="2"
-                :class="[
-                  'w-[80px] h-[45px] rounded-[9px] border pl-4 focus:outline-none focus:border-purple-500',
-                  errors.expYear ? 'border-red-500' : '',
-                ]"
+                :error="errors.expYear"
+                errorMessage="Invalid year."
               />
-              <p v-if="errors.expYear" class="text-red-500 text-xs mt-1">
-                Can't be blank
-              </p>
             </div>
           </div>
-        </div>
 
-        <!-- CVC -->
-        <div class="flex flex-col">
-          <label for="cvc">CVC</label>
-          <input
+          <!-- CVC -->
+          <FormField
             v-model="cvc"
+            label="CVC"
             id="cvc"
             placeholder="e.g. 123"
-            :class="[
-              'w-[191px] h-[45px] mt-[9px] rounded-[9px] border pl-4 focus:outline-none focus:border-purple-500',
-              errors.cvc ? 'border-red-500' : '',
-            ]"
+            :error="errors.cvc"
+            errorMessage="Invalid CVC."
           />
-          <p v-if="errors.cvc" class="text-red-500 text-xs mt-1">
-            Can't be blank
-          </p>
         </div>
-      </div>
 
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="rounded-[9px] bg-[#21092F] h-[53px] text-white"
-      >
-        Confirm
-      </button>
-    </form>
+        <!-- Bouton Submit -->
+        <button
+          type="submit"
+          class="rounded-[9px] bg-[#21092F] h-[53px] text-white"
+        >
+          Confirm
+        </button>
+      </form>
+    </div>
+
+    <!-- Afficher le composant ThankYou si `isFormSubmitted` est true -->
+    <ThankYou v-else @reset-form="resetForm" />
   </div>
 </template>
-
-<style scoped>
-/* Ajoute des styles personnalisés si nécessaire */
-</style>
