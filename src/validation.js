@@ -1,4 +1,3 @@
-// validation.js
 export const validateName = (name) => {
   return name.trim().length > 0;
 };

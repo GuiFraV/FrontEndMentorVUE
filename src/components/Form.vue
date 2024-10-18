@@ -66,7 +66,7 @@ const resetForm = () => {
 </script>
 
 <template>
-  <div class="absolute top-[275px] right-[527px] w-[381px]">
+  <div class="w-[381px]">
     <div v-if="!isFormSubmitted" class="h-[352px]">
       <form
         @submit.prevent="submitForm"

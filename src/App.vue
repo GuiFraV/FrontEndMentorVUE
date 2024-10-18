@@ -25,22 +25,22 @@ const defaultValues = {
 
 <template>
   <div
-    class="bg-hero-pattern relative bg-contain bg-no-repeat flex justify-center items-center h-screen bg-gray-100"
+    class="relative bg-hero-pattern-mobile h-full border border-red-500 md:bg-hero-pattern md:bg-contain md:bg-no-repeat flex flex-col justify-center items-center md:h-screen md:flex-row"
   >
-    <!-- Les cartes sont toujours affichées -->
+    <!-- Les cartes, visibles seulement sur les écrans md et plus grands -->
     <div
-      class="flex flex-col justify-between absolute left-[164px] h-[541px] w-[527px] top-[187px]"
+      class="hidden lg:flex flex-col justify-between absolute left-[164px] top-[187px] h-[541px] w-[527px] z-10"
     >
+      <!-- Carte de devant -->
       <div>
         <img
           :src="frontCard"
           alt="Front Credit Card"
           class="relative"
         >
-
           <div class="w-[84px] h-[47px] flex justify-between items-center absolute top-[28px] left-[32px]">
-            <div class=" bg-white h-[47px] w-[47px] rounded-full"></div>
-            <div class=" border border-white h-[21.15px] w-[21.15px] rounded-full"></div>
+            <div class="bg-white h-[47px] w-[47px] rounded-full"></div>
+            <div class="border border-white h-[21.15px] w-[21.15px] rounded-full"></div>
           </div>
 
           <!-- Afficher le numéro de carte formaté ou valeur par défaut -->
@@ -57,10 +57,10 @@ const defaultValues = {
           <div class="absolute h-[18px] w-[49px] flex items-center text-white font-space-grotesk tracking-[1px] top-[200.5px] left-[366px]">
             {{ (formData.expMonth || defaultValues.expMonth) }}/{{ (formData.expYear || defaultValues.expYear) }}
           </div>
-
         </img>
       </div>
 
+      <!-- Carte de derrière -->
       <div class="absolute right-0 bottom-0">
         <img :src="backCard" alt="Back Credit Card" class="relative">
           <!-- Afficher le CVC ou valeur par défaut -->
@@ -72,6 +72,12 @@ const defaultValues = {
     </div>
 
     <!-- Le composant Form gère l'affichage du formulaire ou du message de remerciement -->
-    <Form :formData="formData" />
+    <div
+      class="border border-blue-500 bottom-0 w-full h-full bg-white flex justify-center items-center md:w-2/3 md:absolute md:right-0 z-0"
+    >
+      <Form :formData="formData" />
+    </div>
   </div>
 </template>
+
+
