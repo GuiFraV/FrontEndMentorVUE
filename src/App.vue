@@ -25,59 +25,70 @@ const defaultValues = {
 
 <template>
   <div
-    class="relative bg-hero-pattern-mobile h-full border border-red-500 md:bg-hero-pattern md:bg-contain md:bg-no-repeat flex flex-col justify-center items-center md:h-screen md:flex-row"
+    class="relative bg-hero-pattern-mobile h-full md:bg-hero-pattern md:bg-contain md:bg-no-repeat flex flex-col justify-center items-center md:h-screen md:flex-row"
   >
     <!-- Les cartes, visibles seulement sur les écrans md et plus grands -->
     <div
-      class="hidden lg:flex flex-col justify-between absolute left-[164px] top-[187px] h-[541px] w-[527px] z-10"
+      class="h-[251px] w-[343px] top-[32px] md:hidden lg:flex flex-col justify-between absolute md:left-[164px] md:top-[187px] md:h-[541px] md:w-[527px] z-10"
     >
       <!-- Carte de devant -->
-      <div>
+      <div class="relative h-[251px]">
         <img
           :src="frontCard"
           alt="Front Credit Card"
-          class="relative"
+          class="absolute bottom-0 lg:relative lg:h-[245px] lg:w-[447px] w-[286px] h-[157px]"
         >
-          <div class="w-[84px] h-[47px] flex justify-between items-center absolute top-[28px] left-[32px]">
-            <div class="bg-white h-[47px] w-[47px] rounded-full"></div>
-            <div class="border border-white h-[21.15px] w-[21.15px] rounded-full"></div>
+          <div class="left-[19px] bottom-[108.6px] w-[54px] h-[30px] lg:w-[84px] lg:h-[47px] flex justify-between items-center absolute lg:top-[28px] lg:left-[32px]">
+            <div class="bg-white h-[30px] w-[30px] lg:h-[47px] lg:w-[47px] rounded-full"></div>
+            <div class="border border-white w-[13px] h-[13px] lg:h-[21.15px] lg:w-[21.15px] rounded-full"></div>
           </div>
 
           <!-- Afficher le numéro de carte formaté ou valeur par défaut -->
-          <div class="absolute h-[36px] w-[372px] text-white text-[28px] flex items-center font-space-grotesk top-[139px] left-[32px] tracking-[3px]">
+          <div class="absolute bottom-[48.6px] left-[19px] text-[18px] tracking-[2px] lg:h-[36px] lg:w-[372px] text-white lg:text-[28px] flex items-center font-space-grotesk lg:top-[139px] lg:left-[32px] lg:tracking-[3px]">
             {{ formData.cardNumber || defaultValues.cardNumber }}
           </div>
 
           <!-- Afficher le nom du titulaire ou valeur par défaut -->
-          <div class="absolute h-[18px] w-[138px] flex items-center text-white font-space-grotesk tracking-[1px] top-[200.5px] left-[32px]">
+          <div class="absolute h-[11px] w-[89px] text-[9px] lg:text-[14px] bottom-[20.6px] left-[19px] lg:h-[18px] lg:w-[138px] flex items-center text-white font-space-grotesk tracking-[1px] lg:top-[200.5px] lg:left-[32px]">
             {{ formData.name || defaultValues.name }}
           </div>
 
           <!-- Afficher la date d'expiration ou valeur par défaut -->
-          <div class="absolute h-[18px] w-[49px] flex items-center text-white font-space-grotesk tracking-[1px] top-[200.5px] left-[366px]">
+          <div class="absolute text-[9px] lg:text-[14px] bottom-[20.6px] left-[232.11px] lg:h-[18px] lg:w-[49px] flex items-center text-white font-space-grotesk tracking-[1px] lg:top-[200.5px] lg:left-[366px]">
             {{ (formData.expMonth || defaultValues.expMonth) }}/{{ (formData.expYear || defaultValues.expYear) }}
           </div>
         </img>
       </div>
 
       <!-- Carte de derrière -->
-      <div class="absolute right-0 bottom-0">
-        <img :src="backCard" alt="Back Credit Card" class="relative">
-          <!-- Afficher le CVC ou valeur par défaut -->
-          <div class="text-white w-[32px] h-[18px] flex items-center justify-center absolute right-[57px] top-[111px] font-space-grotesk text-[14px] tracking-[1px]">
-            {{ formData.cvc || defaultValues.cvc }}
-          </div>
-        </img>
+     <div id="back-card" class=" h-[157px] w-[286px] lg:h-[245px] lg:w-[447px] lg:absolute lg:right-0 bottom-0 relative">
+        <img :src="backCard" alt="Back Credit Card" class="w-full h-full">
+        <!-- Afficher le CVC ou valeur par défaut -->
+        <div class="text-white lg:w-[32px] lg:h-[18px] flex items-center justify-center absolute right-[37.2px] top-[70px] lg:right-[57px] lg:top-[111px] font-space-grotesk text-[9px] lg:text-[14px] tracking-[1px]">
+          {{ formData.cvc || defaultValues.cvc }}
+        </div>
       </div>
+
     </div>
 
     <!-- Le composant Form gère l'affichage du formulaire ou du message de remerciement -->
     <div
-      class="border border-blue-500 bottom-0 w-full h-full bg-white flex justify-center items-center md:w-2/3 md:absolute md:right-0 z-0"
+      class="w-full bottom-0 h-3/5 md:h-screen md:bottom-0 bg-white flex justify-center items-center md:w-2/3 absolute md:right-0 z-0"
     >
       <Form :formData="formData" />
     </div>
   </div>
 </template>
 
+
+<style>
+@media (max-width: 375px) {
+  #back-card {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: -10
+  }
+}
+</style>
 

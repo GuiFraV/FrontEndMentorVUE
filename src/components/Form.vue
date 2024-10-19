@@ -66,7 +66,7 @@ const resetForm = () => {
 </script>
 
 <template>
-  <div class="w-[381px]">
+  <div class="w-[327px] h-[328px] md:w-[381px]">
     <div v-if="!isFormSubmitted" class="h-[352px]">
       <form
         @submit.prevent="submitForm"
@@ -80,6 +80,7 @@ const resetForm = () => {
           placeholder="e.g. Jane Appleseed"
           :error="errors.name"
           errorMessage="Please enter a valid name."
+          class="tracking-[2px]"
         />
 
         <!-- CARD NUMBER -->
@@ -91,6 +92,7 @@ const resetForm = () => {
           maxlength="19"
           :error="errors.cardNumber"
           errorMessage="Please enter a valid card number."
+          class="tracking-[2px]"
         />
 
         <!-- EXPIRATION DATE ET CVC -->
@@ -98,7 +100,7 @@ const resetForm = () => {
           <!-- Expiration Date -->
           <div class="flex flex-col">
             <label>EXP. DATE (MM/YY)</label>
-            <div class="flex space-x-2">
+            <div class="flex space-x-2 w-[152px] md:w-[170px]">
               <FormField
                 v-model="expMonth"
                 id="expMonth"
@@ -106,6 +108,7 @@ const resetForm = () => {
                 maxlength="2"
                 :error="errors.expMonth"
                 errorMessage="Invalid month."
+                class="tracking-[2px]"
               />
               <FormField
                 v-model="expYear"
@@ -114,6 +117,7 @@ const resetForm = () => {
                 maxlength="2"
                 :error="errors.expYear"
                 errorMessage="Invalid year."
+                class="tracking-[2px]"
               />
             </div>
           </div>
@@ -126,6 +130,7 @@ const resetForm = () => {
             placeholder="e.g. 123"
             :error="errors.cvc"
             errorMessage="Invalid CVC."
+            class="w-[164px] md:w-[191px] tracking-[2px]"
           />
         </div>
 
