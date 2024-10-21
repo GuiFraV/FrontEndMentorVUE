@@ -128,7 +128,7 @@ const formattedExpDate = computed(() => {
 </script>
 
 <style>
-@media (max-width: 375px) {
+@media (max-width: 770px) {
   #back-card {
     position: absolute;
     top: 0px;
