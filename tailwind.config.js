@@ -1,11 +1,10 @@
 module.exports = {
-  purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-  darkMode: false, // or 'media' or 'class'
+  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
       backgroundImage: {
-        "hero-pattern": "url('./src/assets/bg-main-desktop.png')",
-        "hero-pattern-mobile": "url('./src/assets/bg-main-mobile.png')",
+        "hero-pattern": "url('/public/images/bg-main-desktop.png')",
+        "hero-pattern-mobile": "url('/public/images/bg-main-mobile.png')",
       },
       fontFamily: {
         "space-grotesk": ['"Space Grotesk"', "sans-serif"],
